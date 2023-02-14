@@ -9,7 +9,7 @@ services:
     depends_on:
     - 'mariabd'
 
-  mariabd:
+  mariabd_jyk:
     image: mariadb
     restart: always
     environment:
@@ -22,7 +22,7 @@ services:
     expose:
       - 3307
 
-  frontend:
+  frontend_jyk:
     build:
       context: ./webapp
       dockerfile: Dockerfile
