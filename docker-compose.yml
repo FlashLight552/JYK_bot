@@ -8,6 +8,8 @@ services:
     restart: always
     depends_on:
     - 'mariabd_jyk'
+    environment:
+    - PYTHONUNBUFFERED=1
 
   mariabd_jyk:
     image: mariadb
