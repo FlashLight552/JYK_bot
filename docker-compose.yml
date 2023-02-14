@@ -6,35 +6,35 @@ services:
       context: ./bot
       dockerfile: Dockerfile 
     restart: always
-    # depends_on:
-    # - 'mariabd_jyk'
+    depends_on:
+    - 'mariabd_jyk'
     environment:
     - PYTHONUNBUFFERED=1
 
-  # mariabd_jyk:
-  #   image: mariadb
-  #   restart: always
-  #   environment:
-  #     - MARIADB_ROOT_PASSWORD=jyk
-  #     - MARIADB_DATABASE=jyk
-  #     - MARIADB_USER=jyk
-  #     - MARIADB_PASSWORD=jyk
-  #   volumes:
-  #     - ./data:/var/lib/mysql
-  #   ports:
-  #     - 3307:3307
+  mariabd_jyk:
+    image: mariadb
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=jyk
+      - MARIADB_DATABASE=jyk
+      - MARIADB_USER=jyk
+      - MARIADB_PASSWORD=jyk
+    volumes:
+      - ./data:/var/lib/mysql
+    ports:
+      - 3306:3306
 
-  # frontend_jyk:
-  #   build:
-  #     context: ./webapp
-  #     dockerfile: Dockerfile
-  #   restart: always
-  #   expose:
-  #     - 6666
-  #   command: >
-  #     sh -c "npm run build &&
-  #            npm install -g serve &&
-  #            PORT=6666 serve -s build"
+  frontend_jyk:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    restart: always
+    expose:
+      - 6666
+    command: >
+      sh -c "npm run build &&
+             npm install -g serve &&
+             PORT=6666 serve -s build"
 
 networks:
   default:
