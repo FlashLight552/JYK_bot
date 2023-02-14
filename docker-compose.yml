@@ -17,6 +17,7 @@ services:
       - MARIADB_DATABASE=jyk
       - MARIADB_USER=jyk
       - MARIADB_PASSWORD=jyk
+      - MARIADB_PORT=3307
     volumes:
       - ./data:/var/lib/mysql
     expose:
