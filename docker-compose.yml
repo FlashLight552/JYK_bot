@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  jyk_bot:
+    build: 
+      context: ./bot
+      dockerfile: Dockerfile 
+    restart: always
+    depends_on:
+    - 'mariabd'
+
+  mariabd:
+    image: mariadb
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=jyk
+      - MARIADB_DATABASE=jyk
+      - MARIADB_USER=jyk
+      - MARIADB_PASSWORD=jyk
+    volumes:
+      - ./data:/var/lib/mysql
+    expose:
+      - 3307
+
+  frontend:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    restart: always
+    expose:
+      - 6666
+    command: >
+      sh -c "npm run build &&
+             npm install -g serve &&
+             serve -s build"
+
+
+
+networks:
+  default:
+    external:
+      name: nginx-networks
