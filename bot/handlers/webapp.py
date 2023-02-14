@@ -62,7 +62,6 @@ async def get_all_users_presences(message: types.Message, mounth:int=None, year:
     db = Database()
     with db.connection:
         user_presence = db.get_users_presences(mounth=mounth,year=year)
-        print(mounth, year)
         all_users = []
         all_date = []
 
