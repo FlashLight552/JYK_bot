@@ -1,6 +1,7 @@
 from aiogram.utils import executor
 import logging
 from time import sleep
+from dotenv import load_dotenv
 
 from cfg.create_bot import dp
 from functions.sql import Database
@@ -16,6 +17,7 @@ handlers_start(dp)
 handlers_webapp(dp)
 
 if __name__ == '__main__':
+    load_dotenv()
     while True:
         try:
             db = Database()

@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile 
     restart: always
     depends_on:
-    - 'mariabd_jyk'
+    - mariabd_jyk
     environment:
     - PYTHONUNBUFFERED=1
 
@@ -22,7 +22,7 @@ services:
     volumes:
       - ./data:/var/lib/mysql
     ports:
-      - 3306:3306
+      - 3307:3307
 
   frontend_jyk:
     build:
