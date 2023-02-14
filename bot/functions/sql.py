@@ -1,11 +1,9 @@
 import mariadb
 import datetime
-from dotenv import load_dotenv
 import os
 
 class Database:
     def __init__(self):
-        load_dotenv()
         try:
             self.connection = mariadb.connect(
                                 user=os.environ['db_user'],

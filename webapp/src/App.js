@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "./App.css";
 import geo from "./assets/geo.gif";
@@ -8,7 +8,6 @@ import logo_white from "./assets/logo-white.svg";
 
 function App() {
   const tg = window.Telegram.WebApp;
-
   tg.ready();
   tg.expand();
 
@@ -46,11 +45,18 @@ function App() {
   const [location, setLocation] = useState({ lat: 0, lon: 0 });
   const [typeGif, setTypeGif] = useState(geo);
   const [typeText, setTypeText] = useState(welcomeText);
+  const [isLoaded, setIsLoad] = useState(false)
 
-  // useEffect(() => {
-  //   getLocation();
-  // });
-  getLocation();
+  useEffect(() => {
+    setIsLoad(true);
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded){
+      getLocation();
+    }
+  }, [isLoaded]);
+ 
 
   return (
     <div className="App">
