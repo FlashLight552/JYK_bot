@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile 
     restart: always
     depends_on:
-    - 'mariabd'
+    - 'mariabd_jyk'
 
   mariabd_jyk:
     image: mariadb
