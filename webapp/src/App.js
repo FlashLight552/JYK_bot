@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import "./App.css";
 import geo from "./assets/geo.gif";
@@ -47,9 +47,10 @@ function App() {
   const [typeGif, setTypeGif] = useState(geo);
   const [typeText, setTypeText] = useState(welcomeText);
 
-  useEffect(() => {
-    getLocation();
-  });
+  // useEffect(() => {
+  //   getLocation();
+  // });
+  getLocation();
 
   return (
     <div className="App">

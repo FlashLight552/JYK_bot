@@ -25,12 +25,12 @@ div.content-text {
 }
 
 div.content-gif {
-  position: fixed;
+  position: relative;
   bottom: 10%;
 }
 
 img.gif {
-  width: 180px;
+  width: 150px;
 }
 
 img.logo {
