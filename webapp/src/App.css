@@ -25,8 +25,8 @@ div.content-text {
 }
 
 div.content-gif {
-  position: relative;
-  bottom: 10%;
+  position: absolute;
+  bottom: 20%;
 }
 
 img.gif {
