@@ -32,7 +32,7 @@ body {
   }
   
   .header {
-    padding-top: 18vmin;
+    padding-top: 15vh;
     display: flex;
     align-items: center;
     justify-content: center;
