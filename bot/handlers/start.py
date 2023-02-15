@@ -26,7 +26,7 @@ async def start(message: types.Message):
 
 
 async def save_name(message: types.Message, state: FSMContext):
-    location_btn = ReplyKeyboardMarkup().add(KeyboardButton(text='Определить геолокацию',
+    location_btn = ReplyKeyboardMarkup(resize_keyboard=True).add(KeyboardButton(text='Определить геолокацию',
                                                             web_app=WebAppInfo(url=os.environ['webapp_path'])))
     await state.finish() 
     
