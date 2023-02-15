@@ -11,7 +11,6 @@ from functions.sql import Database
 
 async def web_app_msg(message: types.Message):
     await message.delete()
-
     lat, lon = message.web_app_data.data.split(':')
     distance = await check_distance(lat, lon)
 
