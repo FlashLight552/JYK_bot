@@ -12,13 +12,13 @@ body {
     justify-content: center;
     flex-direction: column;
   
-    padding-top: 55px;
+    padding-top: 9vh;
   
     color: var(--tg-theme-text-color, #f2f2f2)
   }
   
   div.content-text {
-    padding-top: 55px;
+    padding-top: 9vh;
     padding-left: 35px;
     padding-right: 35px;
   }
