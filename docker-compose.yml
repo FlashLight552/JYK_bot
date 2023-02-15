@@ -10,6 +10,7 @@ services:
     - mariabd_jyk
     environment:
     - PYTHONUNBUFFERED=1
+    - TZ=Europe/Kyiv
 
   mariabd_jyk:
     image: mariadb
@@ -19,6 +20,7 @@ services:
       - MARIADB_DATABASE=jyk
       - MARIADB_USER=jyk
       - MARIADB_PASSWORD=jyk
+      - TZ=Europe/Kyiv
     volumes:
       - ./data:/var/lib/mysql
     ports:

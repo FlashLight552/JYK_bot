@@ -21,7 +21,8 @@ class Database:
     def create_user_data_table(self):
             self.cursor.execute("""CREATE TABLE IF NOT EXISTS user_data (
                                 user_id INT PRIMARY KEY,
-                                user_name VARCHAR(200)
+                                user_name VARCHAR(200),
+                                blackmail boolean DEFAULT true
                                 )""")
             self.connection.commit()
 
@@ -42,6 +43,15 @@ class Database:
         return list
 
 
+    def get_allow_blackmail(self, blackmail:bool=True):
+        self.cursor.execute("""SELECT user_id, user_name FROM user_data WHERE
+                            blackmail=(?) """, (blackmail,))
+        list = []
+        for item in self.cursor:
+            list.append(item)
+        return list
+
+
     def create_class_attendance_table(self):
         self.cursor.execute("""CREATE TABLE IF NOT EXISTS class_attendance (
                                 id MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -59,22 +69,24 @@ class Database:
 
 
     def get_users_presences(self, user_id:str = None, mounth:int=None, year:int=None):
-        get_date = """MONTH(class_attendance.date) = (?) AND YEAR(class_attendance.date) = (?)"""
-        get_by_user_id = """user_data.user_id = (?) AND YEAR(class_attendance.date) = (?)"""
+        get_date = """MONTH(class_attendance.date) = (?) AND YEAR(class_attendance.date) = (?) AND user_data.user_id > (?)"""
+        get_by_user_id = """user_data.user_id = (?) AND YEAR(class_attendance.date) = (?) AND MONTH(class_attendance.date) = (?)"""
 
         if user_id:
             request = get_by_user_id
             arg1 = user_id
             arg2 = datetime.date.today().year
+            arg3 = datetime.date.today().month
         if mounth and year:
             request = get_date
             arg1 = mounth
             arg2 = year
+            arg3 = 0
 
-        self.cursor.execute(f""" SELECT class_attendance.user_id AS class_attendance_user_id, class_attendance.date, class_attendance.shabbat, user_data.user_name
+        self.cursor.execute(f"""SELECT class_attendance.user_id AS class_attendance_user_id, class_attendance.date, class_attendance.shabbat, user_data.user_name
                                 FROM user_data 
                                 INNER JOIN class_attendance ON user_data.user_id = class_attendance.user_id
-                                WHERE {request};""", (arg1, arg2,))
+                                WHERE {request};""", (arg1, arg2, arg3,))
 
         list = []
         for item in self.cursor:

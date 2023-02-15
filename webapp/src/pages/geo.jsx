@@ -60,6 +60,7 @@ function Geo() {
     if (isLoaded) {
       getLocation();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded]);
 
   useEffect(() => {
@@ -72,6 +73,7 @@ function Geo() {
         setTypeLogo(logo_black);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded]);
 
   return (

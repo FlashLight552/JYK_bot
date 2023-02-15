@@ -1,15 +1,14 @@
-from aiogram import types, Dispatcher
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-
 import os
-import pandas as pd
 from haversine import haversine
 from datetime import datetime, timedelta
 
+from aiogram import types, Dispatcher
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from functions.sql import Database
 
 
-async def web_app_msg(message: types.Message):
+
+async def web_app_msg(message: types.Message)-> types.Message:
     await message.delete()
     lat, lon = message.web_app_data.data.split(':')
     distance = await check_distance(lat, lon)
@@ -37,7 +36,7 @@ async def web_app_msg(message: types.Message):
     await message.answer('Были ли вы на шаббате?', reply_markup=inline_kb)
 
 
-async def ask_about_shabbat(call: types.CallbackQuery):
+async def ask_about_shabbat(call: types.CallbackQuery)-> types.Message:
     await call.message.delete()
     answer = (call.data.split('-')[1])
     shabbat = False
@@ -52,48 +51,8 @@ async def ask_about_shabbat(call: types.CallbackQuery):
     # await call.message.answer(f'{user_presence[3]}\n{user_presence[1].strftime("%m/%d/%Y, %H:%M:%S")}\nShabbat - {shabbat}\nAdd to db - ok')
     await call.message.answer(f'Всё отлично, я отметил.')
 
-async def get_all_users_presences(message: types.Message, mounth:int=None, year:int=None) -> types.Message:
-    try:    
-        mounth, year = (message.text.split(' ')[1:3])
-    except:
-        year, mounth = str(datetime.today().strftime("%Y-%m")).split('-')
 
-    db = Database()
-    with db.connection:
-        user_presence = db.get_users_presences(mounth=mounth,year=year)
-        all_users = []
-        all_date = []
-
-        for item in user_presence:
-            user_name = item[3]
-            date = item[1].strftime("%d/%m/%Y")
-            if not user_name in all_users:
-                all_users.append(user_name)
-            if not date in all_date:
-                all_date.append(f'{date}_shabbat')
-                all_date.append(date)
-
-        df = pd.DataFrame({}, columns=all_date, index=all_users)
-        for item in user_presence:
-            user_name = item[3]
-            date = item[1].strftime("%d/%m/%Y")
-            shabbat_presence = item[2]
-
-            df.at[user_name, date] = 1
-            df.at[user_name, (f'{date}_shabbat')] = shabbat_presence
-
-        
-        df = df.fillna(0)
-        filename = f'./{mounth}-{year}-export.xlsx'
-        df.to_excel(filename)
-        
-        doc = open(filename, 'rb')
-        await message.answer_document(doc)
-
-        os.remove(filename)
-
-
-async def check_distance(lat, lon):
+async def check_distance(lat:str, lon:str)->str:
     syn_lat = os.environ['synagogue_latitude']
     syn_lon = os.environ['synagogue_longitude']
     distance = haversine((float(lat), float(lon)), (float(syn_lat), float(syn_lon)))
@@ -102,6 +61,4 @@ async def check_distance(lat, lon):
 
 def handlers_webapp(dp: Dispatcher):
     dp.register_message_handler(web_app_msg, content_types='web_app_data')
-    dp.register_message_handler(get_all_users_presences, commands={'all'})
-    
-    dp.register_callback_query_handler(ask_about_shabbat, text=['ask_about_shabbat-yes', 'ask_about_shabbat-no'])
+    dp.register_callback_query_handler(ask_about_shabbat, regexp='(ask_about_shabbat-)')
