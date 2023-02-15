@@ -32,7 +32,7 @@ body {
   }
   
   .header {
-    padding-top: calc(50px + 10vmin);
+    padding-top: 18vmin;
     display: flex;
     align-items: center;
     justify-content: center;
