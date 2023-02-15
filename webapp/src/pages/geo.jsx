@@ -21,18 +21,29 @@ function Geo() {
 
     tg.MainButton.text = "Отправить геолокацию";
     tg.MainButton.show();
+    tg.onEvent("mainButtonClicked", function () {
+      tg.sendData(location.current);
+    });
+
     setTypeText(successText);
     setTypeGif(checkmark);
   };
 
   let error = () => {
+    tg.MainButton.text = "Закрить";
+    tg.MainButton.show();
+    tg.onEvent("mainButtonClicked", function () {
+      tg.close();
+    });
+
     setTypeGif(crossmark);
     setTypeText(errorText);
   };
 
   const welcomeText = "Тут должна быть какая-то сверх важная информация...";
   const successText = "Геолокация успешно определена, нажмите кнопку отправить";
-  const errorText = "Геолокация не была определена, возможно, Вы не разрешили этого";
+  const errorText =
+    "Геолокация не была определена, возможно, Вы не разрешили этого";
 
   const [typeGif, setTypeGif] = useState(geo);
   const [typeText, setTypeText] = useState(welcomeText);
@@ -60,9 +71,6 @@ function Geo() {
       if (colorSheme === "light") {
         setTypeLogo(logo_black);
       }
-      tg.onEvent("mainButtonClicked", function () {
-        tg.sendData(location.current);
-      });
     }
   }, [isLoaded]);
 
