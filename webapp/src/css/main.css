@@ -2,6 +2,7 @@ body {
     background: var(--tg-theme-bg-color, #f2f2f2);
     font-family: 'Open Sans', sans-serif;
     font-size: calc(6px + 2vmin);
+    max-width: 100%;
   }
   
   div.content {
