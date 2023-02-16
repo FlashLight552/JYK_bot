@@ -4,7 +4,7 @@ from aiogram import types, Dispatcher
 from aiogram import types
 import os
 
-admins = list(os.environ['owner'].replace('[','').replace(']','').split(','))
+admins = list(str(os.environ['owner']).replace('[','').replace(']','').split(','))
 
 class IsAdmin(BoundFilter):
     key = "is_admin"
