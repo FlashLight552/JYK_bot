@@ -6,6 +6,7 @@ from aiogram import types, Dispatcher
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from functions.sql import Database
 
+weekdays_name = {'Monday':'в понедельник', 'Tuesday':'во вторник', 'Wednesday':'в среду', 'Thursday':'в черверг', 'Friday':'в пятницу', 'Saturday':'в субботу', 'Sunday':'в воскресенье'}
 
 
 async def web_app_msg(message: types.Message)-> types.Message:
@@ -14,7 +15,7 @@ async def web_app_msg(message: types.Message)-> types.Message:
     distance = await check_distance(lat, lon)
 
     if float(distance) >= float(os.environ['distance']):
-        return await message.answer(f'Ты не в зоне синагоги {distance}м до неё')
+        return await message.answer(f'Ты не в зоне нашего места урока {distance}м до него')
 
     db = Database()
     with db.connection:
@@ -22,9 +23,10 @@ async def web_app_msg(message: types.Message)-> types.Message:
         user_presence = db.get_users_presences(user_id)
         time_now = datetime.now()
         
+
         if user_presence:
-            if time_now.today().strftime("%A") != os.environ['day_of_weekay']:
-                return await message.answer(f'Приходи ко мне в воскресенье.')
+            if time_now.today().strftime("%A").lower() != os.environ['day_of_weekay'].lower():
+                return await message.answer(f"Приходи ко мне {weekdays_name[os.environ['day_of_weekay']]}.")
             if user_presence[-1][1] + timedelta(days=int(os.environ['days_delay'])) >= time_now:
                 return await message.answer(f'Ты уже отметился, хватит!')
     
@@ -33,7 +35,7 @@ async def web_app_msg(message: types.Message)-> types.Message:
         InlineKeyboardButton('Нет', callback_data='ask_about_shabbat-no')
     )
 
-    await message.answer('Были ли вы на шаббате?', reply_markup=inline_kb)
+    await message.answer('Были ли ты на шаббате?', reply_markup=inline_kb)
 
 
 async def ask_about_shabbat(call: types.CallbackQuery)-> types.Message:
@@ -53,9 +55,14 @@ async def ask_about_shabbat(call: types.CallbackQuery)-> types.Message:
 
 
 async def check_distance(lat:str, lon:str)->str:
-    syn_lat = os.environ['synagogue_latitude']
-    syn_lon = os.environ['synagogue_longitude']
-    distance = haversine((float(lat), float(lon)), (float(syn_lat), float(syn_lon)))
+    try:
+        point_lat = os.environ['custom_latitude']
+        point_lon = os.environ['custom_longitude']
+    except:
+        point_lat = os.environ['synagogue_latitude']
+        point_lon = os.environ['synagogue_longitude']
+        
+    distance = haversine((float(lat), float(lon)), (float(point_lat), float(point_lon)))
     return (f"{distance * 1000:.{0}f}")
 
 

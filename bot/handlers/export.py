@@ -16,7 +16,7 @@ async def get_all_users_presences(message: types.Message) -> types.Message:
     db = Database()
     with db.connection:
         user_presence = db.get_users_presences(mounth=mounth,year=year)
-        filename = await create_exel_export(user_presence, mounth, year)
+        filename = await create_exel_export(user_presence, mounth, year, message.from_user.id)
 
         doc = open(filename, 'rb')
         await message.answer_document(doc)
@@ -28,7 +28,7 @@ async def get_user_presences(message: types.Message) -> types.Message:
     db = Database()
     with db.connection:
         user_presence = db.get_users_presences(message.from_user.id)
-        filename = await create_exel_export(user_presence, mounth, year)
+        filename = await create_exel_export(user_presence, mounth, year, message.from_user.id)
 
         doc = open(filename, 'rb')
         await message.answer_document(doc)
@@ -37,7 +37,7 @@ async def get_user_presences(message: types.Message) -> types.Message:
         os.environ['owner']
 
 
-async def create_exel_export(user_presence:list, mounth:str, year:str) ->str:
+async def create_exel_export(user_presence:list, mounth:str, year:str, user_id:str) ->str:
         """Creates an Excel file with user visits. Returns the filename"""
         all_users = []
         all_date = []
@@ -61,7 +61,7 @@ async def create_exel_export(user_presence:list, mounth:str, year:str) ->str:
             df.at[user_name, (f'{date}_shabbat')] = shabbat_presence
 
         df = df.fillna(0)
-        filename = f'./{mounth}-{year}-export.xlsx'
+        filename = f'./{user_id}__{mounth}-{year}-export.xlsx'
         df.to_excel(filename)
         return filename
 
