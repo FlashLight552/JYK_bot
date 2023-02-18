@@ -55,6 +55,7 @@ async def ask_about_shabbat(call: types.CallbackQuery)-> types.Message:
 
 
 async def check_distance(lat:str, lon:str)->str:
+    """Used for measure distance between two points"""
     try:
         point_lat = os.environ['custom_latitude']
         point_lon = os.environ['custom_longitude']
