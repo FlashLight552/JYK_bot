@@ -6,7 +6,7 @@ from aiogram import types, Dispatcher
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from functions.sql import Database
 
-weekdays_name = {'Monday':'в понедельник', 'Tuesday':'во вторник', 'Wednesday':'в среду', 'Thursday':'в черверг', 'Friday':'в пятницу', 'Saturday':'в субботу', 'Sunday':'в воскресенье'}
+weekdays_name = {'Monday':'в понедельник', 'Tuesday':'во вторник', 'Wednesday':'в среду', 'Thursday':'в четверг', 'Friday':'в пятницу', 'Saturday':'в субботу', 'Sunday':'в воскресенье'}
 
 
 async def web_app_msg(message: types.Message)-> types.Message:
@@ -25,8 +25,8 @@ async def web_app_msg(message: types.Message)-> types.Message:
         
 
         if user_presence:
-            if time_now.today().strftime("%A").lower() != os.environ['day_of_weekay'].lower():
-                return await message.answer(f"Приходи ко мне {weekdays_name[os.environ['day_of_weekay']]}.")
+            if time_now.today().strftime("%A").lower() != os.environ['day_of_week'].lower():
+                return await message.answer(f"Приходи ко мне {weekdays_name[os.environ['day_of_week']]}.")
             if user_presence[-1][1] + timedelta(days=int(os.environ['days_delay'])) >= time_now:
                 return await message.answer(f'Ты уже отметился, хватит!')
     
@@ -35,7 +35,7 @@ async def web_app_msg(message: types.Message)-> types.Message:
         InlineKeyboardButton('Нет', callback_data='ask_about_shabbat-no')
     )
 
-    await message.answer('Были ли ты на шаббате?', reply_markup=inline_kb)
+    await message.answer('Был ли ты на шаббате?', reply_markup=inline_kb)
 
 
 async def ask_about_shabbat(call: types.CallbackQuery)-> types.Message:

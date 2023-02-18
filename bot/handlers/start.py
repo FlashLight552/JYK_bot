@@ -83,8 +83,8 @@ async def set_day(message: types.Message):
 
 
 async def save_day(message: types.Message, state: FSMContext):
-    os.environ['day_of_weekay'] = message.text
-    await message.answer(f"День урока - {os.environ['day_of_weekay']}")
+    os.environ['day_of_week'] = message.text
+    await message.answer(f"День урока - {os.environ['day_of_week']}")
     await state.finish()
 
 
@@ -93,7 +93,7 @@ async def error_day(message: types.Message):
 
 
 async def current_day(message:types.Message):
-    await message.answer(f"Текущий день урока - {os.environ['day_of_weekay']}")
+    await message.answer(f"Текущий день урока - {os.environ['day_of_week']}")
 
 
 async def set_custom_point(massage: types.Message):
@@ -104,7 +104,7 @@ async def set_custom_point(massage: types.Message):
 async def save_custom_point(message: types.Message, state: FSMContext):
     os.environ['custom_latitude'] = str(message.location.latitude)
     os.environ['custom_longitude'] = str(message.location.longitude)
-    await message.answer(f"Записал новык координати для урока.\nlat: {os.environ['custom_latitude']}\nlon: {os.environ['custom_longitude']}")
+    await message.answer(f"Записал новые координаты для урока.\nlat: {os.environ['custom_latitude']}\nlon: {os.environ['custom_longitude']}")
     await state.finish()
 
 
