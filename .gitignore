@@ -153,3 +153,4 @@ cython_debug/
 
 *.fsm_data.json
 bot/cfg/fsm_data.json
+.vscode/settings.json
