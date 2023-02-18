@@ -38,7 +38,7 @@ async def get_user_presences(message: types.Message) -> types.Message:
 
 
 async def create_exel_export(user_presence:list, mounth:str, year:str, user_id:str) ->str:
-        """Creates an Excel file with user visits. Returns the filename"""
+        """Creates an Excel file with user visits. Returns the filename."""
         all_users = []
         all_date = []
 
