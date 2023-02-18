@@ -152,3 +152,4 @@ cython_debug/
 #.idea/
 
 *.fsm_data.json
+bot/cfg/fsm_data.json

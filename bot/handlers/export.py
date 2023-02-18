@@ -62,7 +62,14 @@ async def create_exel_export(user_presence:list, mounth:str, year:str, user_id:s
 
         df = df.fillna(0)
         filename = f'./{user_id}__{mounth}-{year}-export.xlsx'
-        df.to_excel(filename)
+        writer = pd.ExcelWriter(filename)
+        df.to_excel(writer, sheet_name='My_stats')
+
+        for column in df:
+            col_idx = df.columns.get_loc(column)
+            writer.sheets['My_stats'].set_column(col_idx+1, col_idx, 25)
+
+        writer.close()
         return filename
 
 
