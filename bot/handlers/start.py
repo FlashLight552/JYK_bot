@@ -30,20 +30,23 @@ async def start(message: types.Message):
             text = f'Привет {user_name[0]}.\nОшибся с именем? Напиши мне /edit.\n\nВозникли технические проблемы? Пиши @ShtefanNein'
             return await message.answer(text)
     
-    text =  'Привет, я JYK бот и я предназначен для того, чтоб отмечать присутствующих на нашей аниме сходке. '\
-            'Напиши мне свое имя и фамилию и я добавлю тебя в список учеников.\n\n'\
-            'Возникли технические проблемы? Пиши @ShtefanNein'
+    text =  'Привіт 👋 \n'\
+            'Я JYK бот 🤖\n'\
+            'Я призначений для того, щоб відзначати присутніх на наших заняттях\n'\
+            'Давай знайомитись, як тебе звуть і прізвище?  Щоб я міг додати тебе до списку учасників.\n\n'
+            'Далі тобі потрібно буде скасувати під час заняття. P.s. Тобі потрібно перебувати в межах місця уроку.\n\n'
+            'Виникли технічні проблеми?  Пиши @ShtefanNein'
     
     await message.answer(text)
     await Form.user_name.set()
 
 
 async def save_name(message: types.Message, state: FSMContext):
-    location_btn = ReplyKeyboardMarkup(resize_keyboard=True).add(KeyboardButton(text='Определить геолокацию',
+    location_btn = ReplyKeyboardMarkup(resize_keyboard=True).add(KeyboardButton(text='Я тут 🙋‍♂️🙋‍♀️',
                                                             web_app=WebAppInfo(url=os.environ['webapp_path'])))
     await state.finish()
     
-    text = f'Твое имя - {message.text}, я запомнил)'
+    text = f"Твоє ім'я - {message.text}, я запам'ятав)"
     await message.answer(text, 
                         reply_markup=location_btn)
 
@@ -53,7 +56,7 @@ async def save_name(message: types.Message, state: FSMContext):
 
 
 async def edit_name(message: types.Message):
-    text = 'Напиши мне своё новое имя.'
+    text = "Напиши мені своє нове ім'я."
     await message.answer(text, reply_markup=inline_cancel_btn)
     await Form.user_name.set()
 
@@ -159,9 +162,9 @@ async def admin_help(message: types.Message):
     await message.answer(text)
 
 async def user_help(message: types.Message):
-    text =  'Команды для пользователей\n\n'\
-            '/edit - изменение имени\n'\
-            '/stats - статистика посещений за текущий месяц\n'\
+    text =  "Команди для користувачів\n\n"\
+            "/edit - Змінити ім'я\n"\
+            "/stats - статистика відвідувань за поточний місяць\n"\
 
     await message.answer(text)
 

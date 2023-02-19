@@ -19,7 +19,7 @@ function Geo() {
     let longitude = position.coords.longitude;
     location.current = `${latitude}:${longitude}`;
 
-    tg.MainButton.text = "Отправить геолокацию";
+    tg.MainButton.text = "Відправити";
     tg.MainButton.show();
     tg.onEvent("mainButtonClicked", function () {
       tg.sendData(location.current);
@@ -30,7 +30,7 @@ function Geo() {
   };
 
   let error = () => {
-    tg.MainButton.text = "Закрить";
+    tg.MainButton.text = "Закрити";
     tg.MainButton.show();
     tg.onEvent("mainButtonClicked", function () {
       tg.close();
@@ -40,10 +40,10 @@ function Geo() {
     setTypeText(errorText);
   };
 
-  const welcomeText = "Тут должна быть какая-то сверх важная информация...";
-  const successText = "Геолокация успешно определена, нажмите кнопку отправить";
+  const welcomeText = "Тут могла би бути ваша реклама...";
+  const successText = "Геолокація успішно визначена, натисніть кнопку відправити";
   const errorText =
-    "Геолокация не была определена, возможно, Вы не разрешили этого";
+    "Геолокація не була визначена, можливо, ти не дозволив цього";
 
   const [typeGif, setTypeGif] = useState(geo);
   const [typeText, setTypeText] = useState(welcomeText);

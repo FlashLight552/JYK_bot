@@ -6,7 +6,7 @@ from aiogram import types, Dispatcher
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from functions.sql import Database
 
-weekdays_name = {'Monday':'в понедельник', 'Tuesday':'во вторник', 'Wednesday':'в среду', 'Thursday':'в четверг', 'Friday':'в пятницу', 'Saturday':'в субботу', 'Sunday':'в воскресенье'}
+weekdays_name = {'Monday':'в понеділок', 'Tuesday':'у вівторок', 'Wednesday':'в середу', 'Thursday':'у четверг', 'Friday':"у п'ятницю", 'Saturday':'у суботу', 'Sunday':'у неділю'}
 
 
 async def web_app_msg(message: types.Message)-> types.Message:
@@ -15,7 +15,7 @@ async def web_app_msg(message: types.Message)-> types.Message:
     distance = await check_distance(lat, lon)
 
     if float(distance) >= float(os.environ['distance']):
-        return await message.answer(f'Ты не в зоне нашего места урока {distance}м до него')
+        return await message.answer(f'Ти не в зоні нашого місця уроку {distance}м до нього')
 
     db = Database()
     with db.connection:
@@ -26,16 +26,16 @@ async def web_app_msg(message: types.Message)-> types.Message:
 
         if user_presence:
             if time_now.today().strftime("%A").lower() != os.environ['day_of_week'].lower():
-                return await message.answer(f"Приходи ко мне {weekdays_name[os.environ['day_of_week']]}.")
+                return await message.answer(f"Приходь до мене {weekdays_name[os.environ['day_of_week']]}.")
             if user_presence[-1][1] + timedelta(days=int(os.environ['days_delay'])) >= time_now:
-                return await message.answer(f'Ты уже отметился, хватит!')
+                return await message.answer(f'Ти вже відзначився, ЗУПИНИСЬ!!!')
     
     inline_kb = InlineKeyboardMarkup().add(
         InlineKeyboardButton('Да', callback_data='ask_about_shabbat-yes'),
         InlineKeyboardButton('Нет', callback_data='ask_about_shabbat-no')
     )
 
-    await message.answer('Был ли ты на шаббате?', reply_markup=inline_kb)
+    await message.answer('Чи був ти у Шаббат?', reply_markup=inline_kb)
 
 
 async def ask_about_shabbat(call: types.CallbackQuery)-> types.Message:
@@ -51,7 +51,7 @@ async def ask_about_shabbat(call: types.CallbackQuery)-> types.Message:
         # user_presence = db.get_users_presences(call.from_user.id)[-1]
     
     # await call.message.answer(f'{user_presence[3]}\n{user_presence[1].strftime("%m/%d/%Y, %H:%M:%S")}\nShabbat - {shabbat}\nAdd to db - ok')
-    await call.message.answer(f'Всё отлично, я отметил.')
+    await call.message.answer(f'Все чудово, я записав.')
 
 
 async def check_distance(lat:str, lon:str)->str:
