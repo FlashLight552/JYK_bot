@@ -31,11 +31,11 @@ async def web_app_msg(message: types.Message)-> types.Message:
                 return await message.answer(f'Ти вже відзначився, ЗУПИНИСЬ!!!')
     
     inline_kb = InlineKeyboardMarkup().add(
-        InlineKeyboardButton('Да', callback_data='ask_about_shabbat-yes'),
-        InlineKeyboardButton('Нет', callback_data='ask_about_shabbat-no')
+        InlineKeyboardButton('Так', callback_data='ask_about_shabbat-yes'),
+        InlineKeyboardButton('Ні', callback_data='ask_about_shabbat-no')
     )
 
-    await message.answer('Чи був ти у Шаббат?', reply_markup=inline_kb)
+    await message.answer('Чи був ти вчора на шаббаті в синагозі Бродського?', reply_markup=inline_kb)
 
 
 async def ask_about_shabbat(call: types.CallbackQuery)-> types.Message:
