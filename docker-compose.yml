@@ -21,13 +21,13 @@ services:
       - MARIADB_USER=jyk
       - MARIADB_PASSWORD=jyk
       - TZ=Europe/Kyiv
-      - MYSQL_TCP_PORT=3307
+      - MYSQL_TCP_PORT=33007
     volumes:
       - ./data:/var/lib/mysql
     ports:
-      - 3307:3306
+      - 33007:33007
     expose:
-      - 3307
+      - 33007
 
   frontend_jyk:
     build:
