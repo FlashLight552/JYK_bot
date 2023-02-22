@@ -24,8 +24,6 @@ services:
       - MYSQL_TCP_PORT=33007
     volumes:
       - ./data:/var/lib/mysql
-    ports:
-      - 33007:33007
     expose:
       - 33007
 
