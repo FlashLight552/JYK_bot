@@ -9,7 +9,9 @@ from aiogram.types.web_app_info import WebAppInfo
 
 from functions.sql import Database
 from filters.IsAdmin import IsAdmin
+from functions.remember import check_in_reminder
 
+from datetime import datetime
 
 
 weekdays_name = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -33,7 +35,7 @@ async def start(message: types.Message):
     text =  'Привіт 👋 \n'\
             'Я JYK бот 🤖\n'\
             'Я призначений для того, щоб відзначати присутніх на наших заняттях\n'\
-            'Давай знайомитись, напиши як тебе звати та твоє призвище,  щоб я міг додати тебе до списку учасників.\n\n'\
+            'Давай знайомитись, напиши як тебе звати та твоє прізвище,  щоб я міг додати тебе до списку учасників.\n\n'\
             'Далі тобі потрібно буде відмітитись під час заняття. P.s. Тобі потрібно перебувати в межах місця уроку.\n\n'\
             'Виникли технічні проблеми?  Пиши @ShtefanNein'
     
@@ -150,6 +152,7 @@ async def my_id(message : types.Message):
 
 async def admin_help(message: types.Message):
     text =  'ADMINS ONLY\n\n'\
+            "/send_notification - отправить участникам урока напоминание о ЧекИн'е\n\n"\
             '/set_distance - изменение радиуса до места урока\n'\
             '/current_distance - текущий радиус до точки урока\n\n'\
             '/set_day - изменение дня урока\n'\
@@ -158,7 +161,8 @@ async def admin_help(message: types.Message):
             '/delete_custom_point - Удаление пользовательской точки\n'\
             '/current_point - текущее заданное место урока\n\n'\
             '/all - статистика посещений за текущий месяц.\n'\
-            '/all мм гггг - статистика посещений за заданий месяц и год.\n'
+            '/all мм гггг - статистика посещений за заданий месяц и год.\n\n'\
+            '/server_time - серверное время.'
     await message.answer(text)
 
 async def user_help(message: types.Message):
@@ -167,6 +171,10 @@ async def user_help(message: types.Message):
             "/stats - статистика відвідувань за поточний місяць\n"\
 
     await message.answer(text)
+
+async def server_time(message:types.Message):
+    time_now = datetime.now()
+    await message.answer(time_now)
 
 
 def handlers_start(dp: Dispatcher):
@@ -194,3 +202,6 @@ def handlers_start(dp: Dispatcher):
     dp.register_message_handler(error_custom_point, lambda message: message.content_type != 'location', state=Form.custom_loc)
     dp.register_message_handler(del_custom_point, IsAdmin(), commands=['delete_custom_point'])
     dp.register_message_handler(current_point, IsAdmin(), commands=['current_point'])
+
+    dp.register_message_handler(server_time, IsAdmin(), commands=['server_time'])
+    dp.register_message_handler(check_in_reminder, IsAdmin(), commands=['send_notification'])

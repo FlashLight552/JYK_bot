@@ -1,6 +1,6 @@
 import os
 import asyncio
-from aiogram.utils import exceptions
+# from aiogram.utils import exceptions
 import aioschedule as schedule
 from datetime import datetime, timedelta
 
@@ -8,11 +8,15 @@ from .sql import Database
 from cfg.create_bot import telegram_bot as bot
 
 
-async def check_in_reminder():
+async def check_in_reminder(msg=None):
     time_now = datetime.now()
     db = Database()
+    text = 'Starting send blackmail ^__^'
+    await bot.send_message('330663508', text)
+    
     with db.connection:
         users = db.get_allow_blackmail()
+        count = 0
         for item in users:
             user_presence = db.get_users_presences(item[0])
             
@@ -21,48 +25,23 @@ async def check_in_reminder():
                     continue
 
             text = f'Привет {item[1]}, если ты на уроке, отметь себя.'
-            
             try:
-                await send_message(user_id=item[0],text=text)
+                await bot.send_message(chat_id=item[0],text=text)
+                count += 1
                 await asyncio.sleep(1)
-            finally:
+            except:
                 pass
-
-
-async def send_message(user_id: int, text: str, disable_notification: bool = False) -> bool:
-    """
-    Safe messages sender
-
-    :param user_id:
-    :param text:
-    :param disable_notification:
-    :return:
-    """
-    try:
-        await bot.send_message(user_id, text, disable_notification=disable_notification)
-    except exceptions.BotBlocked:
-        print(f"Target [ID:{user_id}]: blocked by user")
-    except exceptions.ChatNotFound:
-        print(f"Target [ID:{user_id}]: invalid user ID")
-    except exceptions.RetryAfter as e:
-        print(f"Target [ID:{user_id}]: Flood limit is exceeded. Sleep {e.timeout} seconds.")
-        await asyncio.sleep(e.timeout)
-        return await send_message(user_id, text)  # Recursive call
-    except exceptions.UserDeactivated:
-        print(f"Target [ID:{user_id}]: user is deactivated")
-    except exceptions.TelegramAPIError:
-        print(f"Target [ID:{user_id}]: failed")
-    else:
-        print(f"Target [ID:{user_id}]: success")
-        return True
-    return False
+    
+    text = f'Stopping send blackmail, successfully sent notifications - {count}'
+    await bot.send_message('330663508', text)
 
 
 async def scheduler_remember():
     """
     Creates scheduler
     """
-    schedule.every().sunday.at("16:00").do(check_in_reminder)
+    schedule.every().sunday.at("15:45").do(check_in_reminder)
+    # schedule.every(8).seconds.do(check_in_reminder)
     while True:
         await schedule.run_pending()
         await asyncio.sleep(1)
